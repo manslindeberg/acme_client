@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# Getting dependencies
+go get github.com/sirupsen/logrus
+go get  github.com/miekg/dns
+go get github.com/jessevdk/go-flags
+go get github.com/x-cray/logrus-prefixed-formatter
+

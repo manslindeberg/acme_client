@@ -1,0 +1,62 @@
+#!/bin/bash
+DIRECTORY=$(dirname "$0")
+echo "Changing to ${DIRECTORY}"
+cd "$DIRECTORY" || exit 1
+
+INPUT="$*"
+GOINPUT=""
+
+if [[ $INPUT == *"http01"* ]]; then
+	
+	TYPE="http01"
+	TMP="${INPUT/$TYPE /}"
+	echo $TMP
+	NEWINPUT=" --type http01"
+	GOINPUT="$TMP$NEWINPUT"
+
+
+elif [[ $INPUT == *"dns01"* ]]; then
+	
+	TYPE="dns01"
+	TMP="${INPUT/$TYPE /}"
+	echo $TMP
+	NEWINPUT=" --type dns01"
+	GOINPUT="$TMP$NEWINPUT"
+
+else 
+	echo "Couldn't find a Challenge Type in command input"
+fi
+
+echo $GOINPUT
+
+
+cd acme/acme_client/
+#cd /project/acme/acme_client/
+
+# RUNS IN BACKGROUND
+go run main.go account.go authorization.go certificate.go challenge.go communication.go directory.go header.go jws.go nonce.go order.go $GOINPUT &
+P1=$!
+
+# RUNS IN BACKGROUND
+cd ../dns_server/
+go run main.go $GOINPUT &
+P2=$!
+
+# RUNS IN BACKGROUND
+cd ../http_server/
+go run main.go &
+P3=$!
+
+# WAIT UNITL P1 HAVE TERMINATED
+wait $P1
+
+# RUNS IN BACKGROUND
+cd ../https_server/
+go run main.go &
+P4=$!
+
+cd ../shutdown_server/
+go run main.go
+
+kill $P4
+
