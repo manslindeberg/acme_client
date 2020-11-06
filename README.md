@@ -4,15 +4,15 @@
 This is a demonstration of how an Acme client may be implemented and generally how the ACME protocol
 works (RFC8555) to obtain certificates for Let's Encrypt.
 
-*ACME client:* An ACME client which can interact with a standard-conforming ACME server.
+**ACME client:** An ACME client which can interact with a standard-conforming ACME server.
 
-*DNS server:* A DNS server which resolves the DNS queries of the ACME server.
+**DNS server:** A DNS server which resolves the DNS queries of the ACME server.
 
-*Challenge HTTP server:* An HTTP server to respond to http-01 queries of the ACME server.
+**Challenge HTTP server:** An HTTP server to respond to http-01 queries of the ACME server.
 
-*Certificate HTTPS server:* An HTTPS server which uses a certificate obtained by the ACME client.
+**Certificate HTTPS server:** An HTTPS server which uses a certificate obtained by the ACME client.
 
-*Shutdown HTTP server:*  An HTTP server to receive a shutdown signal.
+**Shutdown HTTP server:**  An HTTP server to receive a shutdown signal.
 
 
 **Features:**
